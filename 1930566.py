@@ -1,58 +1,71 @@
-print(15*'=-')
-print('|      -- BEM - VINDO --     |')
-print(15*'=-')
-print()
-print('Selecione a opção : ')
-print('[1] - Login')
-print('[2] - Cadastrar')
-print('[3] - Esqueci a senha')
-print()
+class UserManager:
+    def __init__(self):
+        self.lista_usuario = []
+        self.lista_senha = []
 
-opcao = int(input()) 
+    def exibir_menu(self):
+        print(15 * '=-')
+        print('|      -- BEM - VINDO --     |')
+        print(15 * '=-')
+        print()
+        print('Selecione a opção:')
+        print('[1] - Login')
+        print('[2] - Cadastrar')
+        print('[3] - Esqueci a senha')
+        print()
+
+    def realizar_login(self):
+        print()
+        usuario = input('Digite seu nome: ')
+        senha = input('Digite sua senha: ')
+        if usuario in self.lista_usuario and senha == self.lista_senha[self.lista_usuario.index(usuario)]:
+            print(15 * '=-')
+            print('- Login feito com sucesso -')
+            print(15 * '=-')
+        else:
+            print('----------------')
+            print('| Credenciais inválidas |')
+            print('----------------')
+
+    def cadastrar_usuario(self):
+        cadastrar_usuario = input('Crie um usuário: ')
+        cadastrar_senha = input('Crie uma senha: ')
+        self.lista_usuario.append(cadastrar_usuario)
+        self.lista_senha.append(cadastrar_senha)
+        print(15 * '=-')
+        print('-        Conta criada       -')
+        print(15 * '=-')
+
+    def recuperar_senha(self):
+        esqueci_senha = input('Digite seu e-mail de cadastro: ')
+        print('Uma mensagem foi enviada no seu email')
+
+    def salvar_usuarios(self):
+        with open('usuarios.txt', 'a') as arquivo_usuario:
+            for usuario, senha in zip(self.lista_usuario, self.lista_senha):
+                arquivo_usuario.write(usuario + ';' + senha + '\n')
+
+        print('Usuário gravado com sucesso')
 
 
-lista_usuario = []
-lista_senha = []
+def main():
+    user_manager = UserManager()
+    user_manager.exibir_menu()
+    opcao = int(input())
 
-if opcao == 1:
-  print()
-  usuario = str(input('Digite seu nome: '))
-  lista_usuario.append(usuario)
-  senha = str(input('Digite sua senha:'))
-  lista_senha.append(senha)
-  print(15*'=-')
-  print('- Login feito com sucesso -')
-  print(15*'=-')
+    if opcao == 1:
+        user_manager.realizar_login()
+    elif opcao == 2:
+        user_manager.cadastrar_usuario()
+    elif opcao == 3:
+        user_manager.recuperar_senha()
+    else:
+        print('----------------')
+        print('| Opção inválida |')
+        print('----------------')
 
-elif opcao == 2:
-  print()
-  cadastrar_usuario = str(input('Crie um usuario: '))
-  lista_usuario.append(cadastrar_usuario)
-  cadastrar_senha = str(input('Crie uma senha: '))
-  lista_senha.append(cadastrar_senha)
-  print(15*'=-')
-  print('-        Conta criada       -')
-  print(15*'=-')
-
-elif opcao == 3:
-  esqueci_senha = (input('Digite seu e-mail de cadastro: '))
-  print('Uma mensagem foi enviada no seu email')
-
-else:
-  print('----------------')
-  print('|Opção invalida|')
-  print('----------------')
+    user_manager.salvar_usuarios()
 
 
-with open('usuarios.txt', 'a') as arquivo_usuario:
-  i = 0
-  while i < len(lista_usuario):
-    usuarios = lista_usuario[i]
-    senhas = lista_senha[i]
-    arquivo_usuario.write(usuarios)
-    arquivo_usuario.write(';')
-    arquivo_usuario.write(senhas)   
-    arquivo_usuario.write('\n')
-    i+=1
-  
-  print('Usuario gravado com sucesso')
+if __name__ == '__main__':
+    main()
