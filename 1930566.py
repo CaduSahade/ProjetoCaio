@@ -2,6 +2,7 @@ class UserManager:
     def __init__(self):
         self.lista_usuario = []
         self.lista_senha = []
+        self.carregar_usuarios()
 
     def exibir_menu(self):
         print(15 * '=-')
@@ -36,16 +37,26 @@ class UserManager:
         print('-        Conta criada       -')
         print(15 * '=-')
 
+        self.salvar_usuarios()
+
     def recuperar_senha(self):
         esqueci_senha = input('Digite seu e-mail de cadastro: ')
         print('Uma mensagem foi enviada no seu email')
 
     def salvar_usuarios(self):
-        with open('usuarios.txt', 'a') as arquivo_usuario:
+        with open('usuarios.txt', 'w') as arquivo_usuario:
             for usuario, senha in zip(self.lista_usuario, self.lista_senha):
                 arquivo_usuario.write(usuario + ';' + senha + '\n')
 
-        print('Usuário gravado com sucesso')
+    def carregar_usuarios(self):
+        try:
+            with open('usuarios.txt', 'r') as arquivo_usuario:
+                for linha in arquivo_usuario:
+                    usuario, senha = linha.strip().split(';')
+                    self.lista_usuario.append(usuario)
+                    self.lista_senha.append(senha)
+        except FileNotFoundError:
+            pass
 
 
 def main():
@@ -63,8 +74,6 @@ def main():
         print('----------------')
         print('| Opção inválida |')
         print('----------------')
-
-    user_manager.salvar_usuarios()
 
 
 if __name__ == '__main__':
